@@ -1,6 +1,7 @@
 package ancona.todo;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.AdapterView.OnItemClickListener;
 import android.app.Activity;
@@ -29,6 +30,7 @@ public class TodoListView extends Activity {
         populateCarList();
         populateListView();
         registerClickCallback();
+        /*segunda();*/
 
     }
 
@@ -37,7 +39,7 @@ public class TodoListView extends Activity {
 
     private void  populateCarList(){
         myCar.add(new Car("Lunes","23min/24max",R.drawable.soleado,"Soleado"));
-        myCar.add(new Car("Martes","24min/25max",R.drawable.nublado,"Nublado"));
+        myCar.add(new Car("Martes", "24min/25max", R.drawable.nublado, "Nublado"));
         myCar.add(new Car("Miercoles", "23min/24max", R.drawable.lluvioso, "Lluvioso"));
         myCar.add(new Car("Jueves", "17min/18max", R.drawable.lluvioso, "Lluvioso"));
         myCar.add(new Car("Viernes", "12min/14max", R.drawable.nublado, "Nublado"));
@@ -60,18 +62,55 @@ public class TodoListView extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
                 Car clickedCar = myCar.get(position);
-                int a=position;
-                int b=1;
-                int D=a+b;
-                String message = "  La posicion del click es:   " +  D +
-                        "    El dia que eligio es:   " + clickedCar.getMake()+      "   El clima sera:  " + clickedCar.getCondition();
-                Toast.makeText(TodoListView.this,message,Toast.LENGTH_LONG).show();
+                int a = position;
+                int b = 1;
+                int D = a + b;
+
+               /* String message = "  La posicion del click es:   " + D +
+                        "    El dia que eligio es:   " + clickedCar.getMake() + "   El clima sera:  " + clickedCar.getCondition();
+                Toast.makeText(TodoListView.this, message, Toast.LENGTH_LONG).show();*/
+                Intent i = new Intent(TodoListView.this,SegundaVentana.class);
+
+                String dia = clickedCar.getMake();/* variable que almacena el dia*/
+                String year = clickedCar.getYear();
+                int foto = clickedCar.getIcon();
+                String clima = clickedCar.getCondition();
+
+                i.putExtra("dia", dia);
+                i.putExtra("clima",clima);
+                i.putExtra("imagen",foto);
+                i.putExtra("temperatura",year);
+
+
+                startActivity(i);
+
+
 
             }
         });
     }
 
+/*    private void segunda(){
+        ListView list = (ListView)findViewById(R.id.Car);
+        list.setOnItemClickListener(new OnItemClickListener() {
 
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View viewCliked, int position, long id) {
+                Car clickedCar = myCar.get(position);
+
+
+                Intent  ancona = new Intent(TodoListView.this,SegundaVentana.class);
+                String dia = clickedCar.getMake();
+                String condicion = clickedCar.getCondition();
+                ancona.putExtra("dia",dia);
+                ancona.putExtra("concicion",condicion);
+                startActivity(ancona);
+
+            }
+        });
+    }
+*/
     private class MyListAdapter extends ArrayAdapter<Car>{
         public MyListAdapter(){
             super(TodoListView.this, R.layout.item_view, myCar);
